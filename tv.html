@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projeto EFE — Telão do Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'Marimpa';
+    src: url('Marimpa.ttf') format('truetype');
+    font-display: swap;
+  }
+  :root {
+    --bg: #FFF8EC;
+    --surface: #FFFFFF;
+    --surface-2: #F1E9D8;
+    --ink: #241E33;
+    --muted: #8A8298;
+    --amarelo: #FFD23F;
+    --laranja: #FF8A3D;
+    --vermelho: #FF3D3D;
+    --roxo: #7B4DFF;
+    --azul: #3D7BFF;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font-family: 'Sora', sans-serif; overflow: hidden;
+  }
+  .stage { height: 100vh; display: flex; flex-direction: column; padding: 48px 64px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand .mark { height: 40px; }
+  .brand .txt { font-weight: 700; letter-spacing: .1em; font-size: 16px; color: var(--muted); }
+
+  /* ---------- WAITING / JOIN VIEW ---------- */
+  #waitView { flex: 1; display: flex; align-items: center; justify-content: center; gap: 90px; }
+  .join-left { max-width: 480px; }
+  h1 { font-family: 'Marimpa', 'Sora', sans-serif; font-weight: 400; font-size: 52px; line-height: 1.2; margin: 18px 0 16px; color: var(--roxo); }
+  .sub { color: var(--muted); font-size: 20px; line-height: 1.5; }
+  .code-box {
+    margin-top: 34px; display: inline-block; background: var(--surface);
+    border: 2px solid var(--surface-2); border-radius: 20px; padding: 22px 34px;
+  }
+  .code-label { font-size: 14px; letter-spacing: .12em; color: var(--muted); font-weight: 700; }
+  .code-value { font-size: 64px; font-weight: 800; letter-spacing: .12em; color: var(--vermelho); }
+  .qr-wrap { background: white; padding: 20px; border-radius: 24px; border: 2px solid var(--surface-2); }
+  .qr-wrap img { display: block; width: 340px; height: 340px; }
+  .counter-row { margin-top: 30px; display: flex; align-items: baseline; gap: 14px; }
+  .counter-num { font-size: 40px; font-weight: 800; color: var(--azul); }
+  .counter-label { color: var(--muted); font-size: 18px; }
+  .hint-key { margin-top: 40px; font-size: 15px; color: var(--muted); }
+  .hint-key b { color: var(--ink); background: var(--surface-2); padding: 3px 10px; border-radius: 6px; }
+
+  /* ---------- RESULT / SCATTER VIEW ---------- */
+  #resultView { display: none; flex: 1; flex-direction: column; }
+  .result-header { display:flex; justify-content: space-between; align-items:flex-end; margin-bottom: 20px;}
+  .result-title { font-family: 'Marimpa', 'Sora', sans-serif; font-weight: 400; font-size: 40px; color: var(--roxo); }
+  .result-body { flex: 1; display: flex; gap: 50px; align-items: stretch; }
+  .quad-plot-wrap { flex: 1.1; position: relative; }
+  svg#plot { width: 100%; height: 100%; }
+  .axis-label { fill: var(--muted); font-size: 15px; }
+  .quad-label { font-size: 16px; font-weight: 700; }
+
+  .legend { flex: 0.8; display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+  .legend-item { background: var(--surface); border: 2px solid var(--surface-2); border-radius: 16px; padding: 18px 20px; display:flex; align-items:center; gap:16px; border-left-width: 6px; }
+  .legend-item .em { font-size: 30px; }
+  .legend-item .info b { font-size: 18px; display:block; font-weight: 700; }
+  .legend-item .info span { color: var(--muted); font-size: 14px; }
+  .legend-item .count { margin-left: auto; font-size: 26px; font-weight: 800; }
+
+  .reset-btn {
+    position: fixed; bottom: 24px; right: 32px;
+    background: var(--surface); color: var(--muted); border: 1.5px solid var(--surface-2);
+    border-radius: 10px; padding: 10px 16px; font-family: 'Sora'; font-size: 13px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="brand"><img class="mark" src="logo-efe.png" alt="Logo EFE" /><div class="txt">PROJETO EFE</div></div>
+
+  <!-- ===== TELA DE ESPERA / QR ===== -->
+  <div id="waitView">
+    <div class="join-left">
+      <div class="sub" style="color:var(--laranja); font-weight:700; letter-spacing:.08em; font-size:14px;">QUIZ DE PERFIL FINANCEIRO</div>
+      <h1>Escaneie o QR code<br/>e descubra o seu perfil</h1>
+      <p class="sub">Abra a câmera do celular, aponte pro QR ou digite o código no site.</p>
+      <div class="code-box">
+        <div class="code-label">CÓDIGO DA SALA</div>
+        <div class="code-value" id="roomCodeDisplay">----</div>
+      </div>
+      <div class="counter-row">
+        <div class="counter-num" id="finishedCount">0</div>
+        <div class="counter-label">já responderam</div>
+      </div>
+      <div class="hint-key">Toque na tela ou aperte <b>espaço</b> pra revelar o gráfico da turma quando todos terminarem.</div>
+    </div>
+    <div class="qr-wrap"><img id="qrImg" src="" alt="QR code de acesso" /></div>
+  </div>
+
+  <!-- ===== TELA DE RESULTADO DA TURMA ===== -->
+  <div id="resultView">
+    <div class="result-header">
+      <div class="result-title">O mapa financeiro da turma 🗺️</div>
+      <div class="sub" id="totalRespondentes"></div>
+    </div>
+    <div class="result-body">
+      <div class="quad-plot-wrap"><svg id="plot" viewBox="0 0 600 600"></svg></div>
+      <div class="legend" id="legendWrap"></div>
+    </div>
+  </div>
+</div>
+
+<button class="reset-btn" id="resetBtn">Nova turma</button>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="game-data.js"></script>
+<script>
+(function () {
+  let app = null, db = null;
+  try {
+    app = firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+  } catch (e) {
+    console.warn("Firebase não configurado.", e);
+  }
+
+  const waitView = document.getElementById("waitView");
+  const resultView = document.getElementById("resultView");
+  let room = null;
+  let liveResults = {};
+
+  function baseUrl() {
+    // assume tv.html e index.html estão na mesma pasta/publicados juntos
+    return location.href.replace(/tv\.html.*$/, "index.html");
+  }
+
+  function startNewRoom() {
+    room = generateRoomCode();
+    document.getElementById("roomCodeDisplay").textContent = room;
+    const link = `${baseUrl()}?sala=${room}`;
+    document.getElementById("qrImg").src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=8&data=${encodeURIComponent(link)}`;
+    document.getElementById("finishedCount").textContent = "0";
+    liveResults = {};
+    waitView.style.display = "flex";
+    resultView.style.display = "none";
+
+    if (db) {
+      db.ref(`sessions/${room}`).set({ createdAt: Date.now(), joined: 0, finished: 0 });
+      db.ref(`sessions/${room}/finished`).on("value", (snap) => {
+        document.getElementById("finishedCount").textContent = snap.val() || 0;
+      });
+      db.ref(`sessions/${room}/results`).on("value", (snap) => {
+        liveResults = snap.val() || {};
+        if (resultView.style.display !== "none") renderPlot();
+      });
+    }
+  }
+
+  function reveal() {
+    waitView.style.display = "none";
+    resultView.style.display = "flex";
+    resultView.style.flexDirection = "column";
+    renderPlot();
+  }
+
+  const PROFILE_ORDER = ["gastador", "investidor", "poupador", "malabarista"];
+  // posições dos quadrantes no plot SVG (600x600, centro 300,300)
+  const QUAD_POS = {
+    gastador:    { qx: 0, qy: 0 }, // x<0 (esq), y>=0 (cima)
+    investidor:  { qx: 1, qy: 0 }, // x>=0 (dir), y>=0 (cima)
+    malabarista: { qx: 0, qy: 1 }, // x<0 (esq), y<0 (baixo)
+    poupador:    { qx: 1, qy: 1 }, // x>=0 (dir), y<0 (baixo)
+  };
+
+  function renderPlot() {
+    const svg = document.getElementById("plot");
+    const W = 600, H = 600, cx = W / 2, cy = H / 2;
+    let svgParts = [];
+
+    // quadrantes de fundo
+    Object.entries(QUAD_POS).forEach(([key, pos]) => {
+      const p = PROFILES[key];
+      const x = pos.qx === 0 ? 0 : cx;
+      const y = pos.qy === 0 ? 0 : cy;
+      svgParts.push(`<rect x="${x}" y="${y}" width="${cx}" height="${cy}" fill="${p.color}" opacity="0.07" />`);
+    });
+
+    // linhas dos eixos
+    svgParts.push(`<line x1="${cx}" y1="0" x2="${cx}" y2="${H}" stroke="#D9CBAE" stroke-width="2"/>`);
+    svgParts.push(`<line x1="0" y1="${cy}" x2="${W}" y2="${cy}" stroke="#D9CBAE" stroke-width="2"/>`);
+
+    // labels dos perfis nos cantos
+    const labelPos = {
+      gastador:    [20, 30],
+      investidor:  [W - 20, 30],
+      malabarista: [20, H - 18],
+      poupador:    [W - 20, H - 18],
+    };
+    Object.entries(labelPos).forEach(([key, [lx, ly]]) => {
+      const p = PROFILES[key];
+      const anchor = lx < cx ? "start" : "end";
+      svgParts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" class="quad-label" fill="${p.color}">${p.emoji} ${p.name}</text>`);
+    });
+
+    // pontos dos alunos (anônimos)
+    const counts = { gastador: 0, poupador: 0, malabarista: 0, investidor: 0 };
+    Object.values(liveResults).forEach((r) => {
+      counts[r.profileId] = (counts[r.profileId] || 0) + 1;
+      // normaliza x,y (-24..24) pra coordenadas do svg, com leve jitter pra não empilhar
+      const nx = cx + (r.x / 24) * (cx - 40) + (Math.random() * 20 - 10);
+      const ny = cy - (r.y / 24) * (cy - 40) + (Math.random() * 20 - 10);
+      const color = PROFILES[r.profileId].color;
+      svgParts.push(`<circle cx="${nx}" cy="${ny}" r="7" fill="${color}" opacity="0.85"><animate attributeName="r" from="0" to="7" dur="0.4s"/></circle>`);
+    });
+
+    svg.innerHTML = svgParts.join("");
+
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    document.getElementById("totalRespondentes").textContent = `${total} respostas`;
+
+    const legend = document.getElementById("legendWrap");
+    legend.innerHTML = "";
+    PROFILE_ORDER.forEach((key) => {
+      const p = PROFILES[key];
+      const div = document.createElement("div");
+      div.className = "legend-item";
+      div.style.borderLeftColor = p.color;
+      div.innerHTML = `<div class="em">${p.emoji}</div>
+        <div class="info"><b>${p.name}</b><span>${p.nickname}</span></div>
+        <div class="count" style="color:${p.color}">${counts[key] || 0}</div>`;
+      legend.appendChild(div);
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Space") reveal();
+  });
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("#resetBtn")) return;
+    if (waitView.style.display !== "none") reveal();
+  });
+  document.getElementById("resetBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    startNewRoom();
+  });
+
+  startNewRoom();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>Qual é seu Perfil Financeiro? — Projeto EFE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'Marimpa';
+    src: url('Marimpa.ttf') format('truetype');
+    font-display: swap;
+  }
+  :root {
+    /* Paleta oficial do Projeto EFE */
+    --bg: #FFF8EC;
+    --surface: #FFFFFF;
+    --surface-2: #F1E9D8;
+    --ink: #241E33;
+    --muted: #837B95;
+    --amarelo: #FFD23F;
+    --laranja: #FF8A3D;
+    --vermelho: #FF3D3D;
+    --roxo: #7B4DFF;
+    --azul: #3D7BFF;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Sora', sans-serif;
+    overflow-x: hidden;
+  }
+  .screen {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 20px 32px;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .eyebrow {
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--laranja);
+  }
+  h1 {
+    font-family: 'Marimpa', 'Sora', sans-serif;
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 8px 0 12px;
+    color: var(--roxo);
+  }
+  p { line-height: 1.55; color: var(--muted); font-size: 15px; }
+  .btn {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 16px;
+    padding: 17px 20px;
+    cursor: pointer;
+    transition: transform .12s ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--amarelo); color: var(--ink); box-shadow: 0 4px 0 #E0AD1F; }
+  .btn-primary:active { box-shadow: 0 1px 0 #E0AD1F; transform: translateY(3px); }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--surface-2); }
+
+  /* ---- Landing ---- */
+  #landing { justify-content: center; text-align: center; }
+  .logo-mark { width: 92px; margin: 0 auto 18px; display: block; }
+  .doodle-row { display: flex; justify-content: center; gap: 18px; margin: 22px 0 6px; font-size: 26px; opacity: .9; }
+  .mode-choice { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
+  .mode-btn {
+    display: flex; align-items: center; gap: 14px; text-align: left;
+    background: var(--surface); border: 2px solid var(--surface-2); border-radius: 16px;
+    padding: 16px 18px; cursor: pointer; font-family: 'Sora', sans-serif;
+  }
+  .mode-btn:active { background: var(--surface-2); }
+  .mode-btn .ic { font-size: 26px; }
+  .mode-btn b { display: block; font-size: 15px; color: var(--ink); }
+  .mode-btn span { font-size: 13px; color: var(--muted); }
+  #roomStep { display: none; }
+  .back-link { background: none; border: none; color: var(--muted); font-size: 13px; margin-bottom: 14px; cursor: pointer; text-decoration: underline; padding: 0; }
+  .room-input-wrap { margin: 10px 0 8px; }
+  input#roomCode {
+    width: 100%;
+    font-family: 'Sora', sans-serif;
+    font-size: 22px; font-weight: 700; letter-spacing: 0.18em;
+    text-align: center; text-transform: uppercase;
+    background: var(--surface); color: var(--ink);
+    border: 2px solid var(--surface-2); border-radius: 16px;
+    padding: 14px; margin-bottom: 14px;
+  }
+  input#roomCode:focus { outline: none; border-color: var(--roxo); }
+  .hint { font-size: 13px; color: var(--muted); margin-top: -6px; margin-bottom: 18px; }
+
+  /* ---- Quiz ---- */
+  #quiz { display: none; }
+  .progress-track {
+    height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden;
+    margin-bottom: 26px;
+  }
+  .progress-fill { height: 100%; background: var(--roxo); width: 0%; transition: width .35s ease; border-radius: 4px; }
+  .q-counter { font-size: 13px; color: var(--muted); margin-bottom: 10px; font-weight: 700; letter-spacing: .04em; }
+  .q-text {
+    font-family: 'Marimpa', 'Sora', sans-serif;
+    font-weight: 400;
+    font-size: 25px; line-height: 1.3;
+    margin-bottom: 26px;
+    color: var(--ink);
+  }
+  .options { display: flex; flex-direction: column; gap: 12px; }
+  .opt-btn {
+    text-align: left;
+    background: var(--surface);
+    border: 2px solid var(--surface-2);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 16px 18px;
+    font-size: 15px;
+    line-height: 1.4;
+    font-family: 'Sora', sans-serif;
+    cursor: pointer;
+  }
+  .opt-btn:active { background: var(--surface-2); }
+  .opt-btn.selected { border-color: var(--roxo); background: #F1EBFF; }
+
+  /* ---- Result ---- */
+  #result { display: none; text-align: center; justify-content: flex-start; }
+  .result-emoji { font-size: 64px; margin: 6px 0 4px; }
+  .result-name { font-family: 'Marimpa', 'Sora', sans-serif; font-weight: 400; font-size: 30px; color: var(--ink); }
+  .result-nick { font-family: 'Sora', sans-serif; font-weight: 700; margin-bottom: 14px; }
+  .result-desc { text-align: left; }
+  .tips { text-align: left; margin: 20px 0; padding: 0; list-style: none; }
+  .tips li {
+    background: var(--surface); border-radius: 14px; padding: 14px 16px;
+    margin-bottom: 10px; font-size: 14px; line-height: 1.45; color: var(--ink);
+    border-left: 4px solid var(--surface-2);
+  }
+  .actions { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .footer-note {
+    margin-top: 24px; font-size: 13px; color: var(--muted); text-align: center;
+  }
+  .footer-note b { color: var(--roxo); }
+  .social-counter {
+    display: inline-block; margin: 4px auto 0; padding: 6px 14px;
+    background: var(--surface-2); border-radius: 100px; font-size: 12.5px;
+    color: var(--muted); font-weight: 600;
+  }
+
+  #shareCanvas { display: none; }
+  .loader { text-align:center; color: var(--muted); padding-top: 40px; }
+</style>
+</head>
+<body>
+
+<!-- ============ LANDING ============ -->
+<section class="screen" id="landing">
+  <div>
+    <img class="logo-mark" src="logo-efe.png" alt="Logo Projeto EFE" />
+    <div class="eyebrow">Educação Financeira nas Escolas</div>
+    <h1>Qual é o seu<br/>Perfil Financeiro?</h1>
+    <p>12 perguntas rápidas, sem certo ou errado. No final você descobre seu perfil financeiro.</p>
+    <div class="doodle-row" aria-hidden="true">💸 🎯 🐷 📈</div>
+    <div class="social-counter" id="socialCounter" style="display:none"></div>
+  </div>
+
+  <!-- passo 1: escolher o modo -->
+  <div id="modeStep">
+    <div class="mode-choice">
+      <button class="mode-btn" id="chooseSala">
+        <span class="ic">🏫</span>
+        <span><b>Estou em sala de aula</b><span>Tenho um código ou vou escanear o QR</span></span>
+      </button>
+      <button class="mode-btn" id="chooseSolo">
+        <span class="ic">📱</span>
+        <span><b>Só eu, agora</b><span>Sem facilitador, sem sala — só curiosidade</span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- passo 2 (só no modo sala): código -->
+  <div id="roomStep">
+    <button class="back-link" id="backToChoice">← voltar</button>
+    <div class="room-input-wrap">
+      <input id="roomCode" maxlength="4" placeholder="CÓDIGO DA SALA" autocomplete="off" autocapitalize="characters" />
+    </div>
+    <div class="hint">Peça o código pro seu facilitador ou escaneie o QR na TV.</div>
+    <button class="btn btn-primary" style="width:100%" id="startSalaBtn">Começar o quiz</button>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section class="screen" id="quiz">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="q-counter" id="qCounter">PERGUNTA 1 DE 12</div>
+  <div class="q-text" id="qText"></div>
+  <div class="options" id="optionsWrap"></div>
+</section>
+
+<!-- ============ RESULT ============ -->
+<section class="screen" id="result">
+  <div class="result-emoji" id="rEmoji"></div>
+  <div class="result-name" id="rName"></div>
+  <div class="result-nick" id="rNick"></div>
+  <div class="social-counter" id="resultCounter" style="display:none"></div>
+  <p class="result-desc" id="rDesc"></p>
+  <ul class="tips" id="rTips"></ul>
+  <div class="actions">
+    <button class="btn btn-primary" id="shareBtn">Compartilhar meu resultado</button>
+    <button class="btn btn-ghost" id="inviteBtn">Convidar um amigo pra testar</button>
+    <button class="btn btn-ghost" id="restartBtn">Fazer de novo</button>
+  </div>
+  <div class="footer-note" id="footerNote"></div>
+</section>
+
+<canvas id="shareCanvas" width="1080" height="1920"></canvas>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="game-data.js"></script>
+<script>
+(function () {
+  let app = null, db = null;
+  try {
+    app = firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+  } catch (e) {
+    console.warn("Firebase não configurado — o quiz funciona, mas sem sincronizar com a TV.", e);
+  }
+
+  const SITE_URL = location.origin + location.pathname.replace(/index\.html$/, "");
+
+  const params = new URLSearchParams(location.search);
+  const roomInput = document.getElementById("roomCode");
+
+  const studentId = (() => {
+    let id = sessionStorage.getItem("efe_student_id");
+    if (!id) {
+      id = "a" + Math.random().toString(36).slice(2, 10);
+      sessionStorage.setItem("efe_student_id", id);
+    }
+    return id;
+  })();
+
+  let mode = null; // "sala" | "solo"
+  let room = null;
+  let shuffledQuestions = [];
+  let currentIndex = 0;
+  let chosenKeys = [];
+
+  const landing = document.getElementById("landing");
+  const quiz = document.getElementById("quiz");
+  const result = document.getElementById("result");
+  const modeStep = document.getElementById("modeStep");
+  const roomStep = document.getElementById("roomStep");
+
+  // mostra quantas pessoas já fizeram o teste (estatística global, sem dado pessoal)
+  if (db) {
+    db.ref("global/totalCompleted").once("value").then((snap) => {
+      const total = snap.val() || 0;
+      if (total > 20) {
+        const el = document.getElementById("socialCounter");
+        el.textContent = `🔥 ${total.toLocaleString("pt-BR")} pessoas já descobriram o perfil delas`;
+        el.style.display = "inline-block";
+      }
+    }).catch(() => {});
+  }
+
+  // se veio de um QR/link de sala (?sala=XXXX), pula direto pro modo sala
+  if (params.get("sala")) {
+    mode = "sala";
+    room = params.get("sala").toUpperCase();
+    startQuiz();
+  }
+
+  document.getElementById("chooseSala").addEventListener("click", () => {
+    modeStep.style.display = "none";
+    roomStep.style.display = "block";
+    roomInput.focus();
+  });
+
+  document.getElementById("backToChoice").addEventListener("click", () => {
+    roomStep.style.display = "none";
+    modeStep.style.display = "block";
+  });
+
+  document.getElementById("chooseSolo").addEventListener("click", () => {
+    mode = "solo";
+    room = null;
+    startQuiz();
+  });
+
+  document.getElementById("startSalaBtn").addEventListener("click", () => {
+    const code = (roomInput.value || "").trim().toUpperCase();
+    if (code.length !== 4) {
+      roomInput.style.borderColor = "var(--vermelho)";
+      roomInput.focus();
+      return;
+    }
+    mode = "sala";
+    room = code;
+    startQuiz();
+  });
+
+  function startQuiz() {
+    if (mode === "sala" && db && room) {
+      db.ref(`sessions/${room}/joined`).transaction((v) => (v || 0) + 1);
+    }
+    shuffledQuestions = QUESTIONS.map((q) => ({
+      text: q.text,
+      options: shuffle(q.options),
+    }));
+    currentIndex = 0;
+    chosenKeys = [];
+    landing.style.display = "none";
+    quiz.style.display = "flex";
+    quiz.style.flexDirection = "column";
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = shuffledQuestions[currentIndex];
+    document.getElementById("qCounter").textContent = `PERGUNTA ${currentIndex + 1} DE ${QUESTIONS.length}`;
+    document.getElementById("progressFill").style.width = `${(currentIndex / QUESTIONS.length) * 100}%`;
+    document.getElementById("qText").textContent = q.text;
+    const wrap = document.getElementById("optionsWrap");
+    wrap.innerHTML = "";
+    q.options.forEach((opt) => {
+      const b = document.createElement("button");
+      b.className = "opt-btn";
+      b.textContent = opt.label;
+      b.addEventListener("click", () => selectOption(opt.key, b));
+      wrap.appendChild(b);
+    });
+  }
+
+  function selectOption(key, btnEl) {
+    document.querySelectorAll(".opt-btn").forEach((b) => (b.disabled = true));
+    btnEl.classList.add("selected");
+    chosenKeys.push(key);
+    setTimeout(() => {
+      currentIndex++;
+      if (currentIndex < QUESTIONS.length) {
+        renderQuestion();
+      } else {
+        document.getElementById("progressFill").style.width = "100%";
+        finishQuiz();
+      }
+    }, 250);
+  }
+
+  function finishQuiz() {
+    const res = computeResult(chosenKeys);
+    const profile = PROFILES[res.profileId];
+
+    if (db) {
+      if (mode === "sala" && room) {
+        db.ref(`sessions/${room}/results/${studentId}`).set({
+          x: res.x, y: res.y, profileId: res.profileId, ts: Date.now(),
+        });
+        db.ref(`sessions/${room}/finished`).transaction((v) => (v || 0) + 1);
+      }
+      // conta pro total geral (solo ou sala), sem guardar dado pessoal nenhum
+      db.ref("global/totalCompleted").transaction((v) => (v || 0) + 1).then((r) => {
+        const total = r.snapshot.val();
+        if (total) {
+          const el = document.getElementById("resultCounter");
+          el.textContent = `Você é a pessoa nº ${total.toLocaleString("pt-BR")} a descobrir o perfil 🎉`;
+          el.style.display = "inline-block";
+        }
+      }).catch(() => {});
+    }
+
+    document.getElementById("rEmoji").textContent = profile.emoji;
+    document.getElementById("rName").textContent = profile.name;
+    const nickEl = document.getElementById("rNick");
+    nickEl.textContent = profile.nickname;
+    nickEl.style.color = profile.color;
+    document.getElementById("rDesc").textContent = profile.description;
+    const tipsEl = document.getElementById("rTips");
+    tipsEl.innerHTML = "";
+    profile.tips.forEach((t) => {
+      const li = document.createElement("li");
+      li.textContent = t;
+      li.style.borderLeftColor = profile.color;
+      tipsEl.appendChild(li);
+    });
+    document.getElementById("shareBtn").style.background = profile.color;
+    document.getElementById("shareBtn").style.color = "#fff";
+    document.getElementById("shareBtn").style.boxShadow = "none";
+
+    const footer = document.getElementById("footerNote");
+    footer.innerHTML = mode === "sala"
+      ? "Olha pra TV — o <b>gráfico da turma</b> vai aparecer quando todo mundo terminar 👀"
+      : "Gostou? Chama um amigo pra descobrir o perfil dele também 👇";
+
+    quiz.style.display = "none";
+    result.style.display = "flex";
+    result.style.flexDirection = "column";
+
+    document.getElementById("shareBtn").onclick = () => shareResult(profile);
+    document.getElementById("inviteBtn").onclick = () => inviteFriend();
+  }
+
+  function inviteFriend() {
+    const text = "Descobri meu perfil financeiro no teste do Projeto EFE! Faz o teste também, é rapidinho 👇";
+    if (navigator.share) {
+      navigator.share({ title: "Projeto EFE — Quiz de Perfil Financeiro", text, url: SITE_URL }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(`${text} ${SITE_URL}`).then(() => {
+        alert("Link copiado! Agora é só colar e mandar pro seu amigo.");
+      });
+    } else {
+      prompt("Copie o link e mande pro seu amigo:", SITE_URL);
+    }
+  }
+
+  function shareResult(profile) {
+    const canvas = document.getElementById("shareCanvas");
+    const ctx = canvas.getContext("2d");
+    const W = canvas.width, H = canvas.height;
+
+    function draw() {
+      // fundo claro, cor de destaque = cor do perfil
+      ctx.fillStyle = "#FFF8EC";
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = profile.color;
+      ctx.fillRect(0, 0, W, 26);
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#837B95";
+      ctx.font = "700 32px Sora, sans-serif";
+      ctx.fillText("PROJETO EFE", W / 2, 200);
+      ctx.font = "400 28px Sora, sans-serif";
+      ctx.fillText("Meu Perfil Financeiro é...", W / 2, 244);
+
+      ctx.font = "230px sans-serif";
+      ctx.fillText(profile.emoji, W / 2, 600);
+
+      ctx.fillStyle = "#241E33";
+      ctx.font = "400 84px Marimpa, sans-serif";
+      ctx.fillText(profile.name, W / 2, 730);
+      ctx.fillStyle = profile.color;
+      ctx.font = "700 42px Sora, sans-serif";
+      ctx.fillText(profile.nickname, W / 2, 786);
+
+      ctx.fillStyle = "#4A4358";
+      ctx.font = "400 32px Sora, sans-serif";
+      wrapText(ctx, profile.description, W / 2, 900, 860, 44);
+
+      ctx.fillStyle = "#837B95";
+      ctx.font = "500 30px Sora, sans-serif";
+      ctx.fillText("Descubra o seu também 👇", W / 2, H - 160);
+      ctx.fillStyle = profile.color;
+      ctx.font = "700 40px Sora, sans-serif";
+      ctx.fillText("@efe.ufpe", W / 2, H - 100);
+
+      canvas.toBlob((blob) => {
+        const file = new File([blob], "meu-perfil-financeiro-efe.png", { type: "image/png" });
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          navigator.share({
+            files: [file],
+            title: "Meu Perfil Financeiro — Projeto EFE",
+            text: "Descobri meu perfil financeiro! Faz o teste também 👇",
+          }).catch(() => downloadBlob(blob));
+        } else {
+          downloadBlob(blob);
+        }
+      }, "image/png");
+    }
+
+    // garante que as fontes já carregaram antes de desenhar no canvas
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.load("400 84px Marimpa").then(() => document.fonts.ready.then(draw));
+    } else {
+      draw();
+    }
+  }
+
+  function downloadBlob(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "meu-perfil-financeiro-efe.png";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(" ");
+    let line = "";
+    let lines = [];
+    words.forEach((word) => {
+      const test = line + word + " ";
+      if (ctx.measureText(test).width > maxWidth && line !== "") {
+        lines.push(line);
+        line = word + " ";
+      } else {
+        line = test;
+      }
+    });
+    lines.push(line);
+    lines.forEach((l, i) => ctx.fillText(l.trim(), x, y + i * lineHeight));
+  }
+
+  document.getElementById("restartBtn").addEventListener("click", () => location.reload());
+})();
+</script>
+</body>
+</html>
