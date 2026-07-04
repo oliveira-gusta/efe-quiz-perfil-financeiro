@@ -21,109 +21,112 @@ const QUESTIONS = [
   {
     text: "Você achou R$ 200 no bolso de uma jaqueta velha. O que você faz?",
     options: [
-      { key: "gastador",    label: "Bora pedir um lanche ou comprar aquela blusinha!" },
-      { key: "poupador",    label: "Guardo na mesma hora, vai que eu precise de urgência." },
-      { key: "malabarista", label: "Uso pra resolver o que estiver \u2018gritando\u2019 mais alto no momento." },
-      { key: "investidor",  label: "Coloco numa reserva que rende, enquanto penso com calma." },
+      { key: "gastador",    label: "Aproveito pra comprar algo que eu já queria, sem pensar muito." },
+      { key: "poupador",    label: "Guardo tudo — prefiro ter de sobra caso precise depois." },
+      { key: "malabarista", label: "Uso pra resolver o que estiver pendente no momento." },
+      { key: "investidor",  label: "Coloco numa reserva e penso com calma no que fazer depois." },
     ],
   },
   {
     text: "Seu celular quebrou a tela, mas ainda funciona. O que você decide?",
     options: [
-      { key: "gastador",    label: "Já aproveito e parcelo o último modelo de última geração." },
-      { key: "poupador",    label: "Continuo usando quebrado, consertar é muito caro." },
-      { key: "malabarista", label: "Vou empurrando e resolvendo aos poucos, sem plano." },
-      { key: "investidor",  label: "Pesquiso em três lugares e avalio se vale mais arrumar ou trocar." },
+      { key: "gastador",    label: "Aproveito a desculpa e já troco por um modelo mais novo." },
+      { key: "poupador",    label: "Prefiro continuar usando assim a gastar com conserto." },
+      { key: "malabarista", label: "Vou deixando pra resolver depois, conforme sobrar tempo ou dinheiro." },
+      { key: "investidor",  label: "Pesquiso os preços antes de decidir se compensa consertar ou trocar." },
     ],
   },
   {
-    text: "Um amigo te chama de última hora pra um show imperdível.",
+    text: "Um amigo te chama de última hora pra um show que você queria muito ir.",
     options: [
-      { key: "gastador",    label: "Passo o cartão e depois eu vejo como pago." },
-      { key: "poupador",    label: "Digo que não vou, mesmo querendo, porque não tava no planejado." },
+      { key: "gastador",    label: "Vou, e resolvo o resto do mês depois." },
+      { key: "poupador",    label: "Não vou, mesmo com vontade, porque não estava nos meus planos." },
       { key: "malabarista", label: "Decido na hora, sem saber direito se vai sobrar depois." },
-      { key: "investidor",  label: "Confiro se o orçamento de lazer do mês ainda cobre isso." },
+      { key: "investidor",  label: "Confiro se o que separei pra lazer nesse mês ainda cobre isso." },
     ],
   },
   {
-    text: "Como você lida com promoções de \u201cLeve 3, Pague 2\u201d?",
+    text: "Como você costuma reagir a promoções tipo \u201cLeve 3, Pague 2\u201d?",
     options: [
-      { key: "gastador",    label: "Compro de tudo, é promoção! Não posso perder!" },
-      { key: "poupador",    label: "Não compro, só levo o que vim buscar e olhe lá." },
+      { key: "gastador",    label: "Acabo levando mais do que vim buscar, porque é vantagem." },
+      { key: "poupador",    label: "Levo só o estritamente necessário, se tanto." },
       { key: "malabarista", label: "Levo na empolgação e só depois vejo o que isso mexeu no mês." },
-      { key: "investidor",  label: "Só compro se for algo que eu já uso sempre." },
+      { key: "investidor",  label: "Só compro se for algo que eu já uso no dia a dia." },
     ],
   },
   {
-    text: "O que você sente quando abre o app do banco?",
+    // pergunta direta de autoavaliação (estilo Quizur), em vez de cenário
+    text: "Como você descreveria seu conhecimento sobre finanças pessoais hoje?",
     options: [
-      { key: "gastador",    label: "Emoção! Nunca sei o que vou encontrar." },
-      { key: "poupador",    label: "Um receio, mesmo sabendo que não gastei nada." },
-      { key: "malabarista", label: "Evito abrir \u2014 prefiro não saber até precisar mesmo." },
-      { key: "investidor",  label: "Tranquilidade, entro pra conferir rendimento e orçamento." },
+      { key: "gastador",    label: "Sei o básico, mas confesso que não coloco muito em prática." },
+      { key: "poupador",    label: "Sei guardar dinheiro, mas tenho receio de investir no que não conheço." },
+      { key: "malabarista", label: "Vou aprendendo aos poucos, mas ainda não organizei isso na prática." },
+      { key: "investidor",  label: "Gosto de estudar sobre o assunto e tento aplicar o que aprendo." },
     ],
   },
   {
     text: "Quando o assunto é cartão de crédito, você\u2026",
     options: [
-      { key: "gastador",    label: "Acho o limite mágico, uso sempre que posso." },
-      { key: "poupador",    label: "Tenho pavor, prefiro Pix ou dinheiro vivo." },
-      { key: "malabarista", label: "Uso sem muito planejamento, decido na hora." },
-      { key: "investidor",  label: "Uso estrategicamente pra acumular pontos, mas pago a fatura toda." },
+      { key: "gastador",    label: "Uso bastante — o limite meio que vira uma extensão da minha renda." },
+      { key: "poupador",    label: "Evito usar, prefiro Pix ou dinheiro à vista." },
+      { key: "malabarista", label: "Uso sem muito planejamento, geralmente decido na hora." },
+      { key: "investidor",  label: "Uso estrategicamente pra acumular benefícios, mas pago a fatura inteira." },
     ],
   },
   {
-    text: "Alguém te fala sobre investir em criptomoedas ou bolsa de valores:",
+    // pergunta direta de autoavaliação (estilo Quizur), em vez de cenário
+    text: "Qual frase te representa melhor quando o assunto é dinheiro?",
     options: [
-      { key: "gastador",    label: "Acho legal, mas prefiro gastar meu dinheiro hoje." },
-      { key: "poupador",    label: "Deus me livre! Só de ouvir \u2018risco\u2019 eu fujo." },
-      { key: "malabarista", label: "Tenho curiosidade, mas nunca paro pra organizar isso." },
-      { key: "investidor",  label: "Tenho interesse, mas sei que primeiro preciso estudar." },
+      { key: "gastador",    label: "Vivo o momento — penso nas consequências financeiras depois." },
+      { key: "poupador",    label: "Prefiro abrir mão de coisas boas a correr o risco de faltar dinheiro." },
+      { key: "malabarista", label: "Vou decidindo as coisas conforme elas aparecem, sem muito plano." },
+      { key: "investidor",  label: "Prefiro pensar antes de agir, mesmo que demore um pouco mais." },
     ],
   },
   {
-    text: "Faltam 5 dias pro fim do mês e você quer muito sair. Como está seu saldo?",
+    text: "Faltam 5 dias pro fim do mês e você quer sair. Como está seu saldo?",
     options: [
-      { key: "gastador",    label: "Zerado, já usei o cheque especial, mas a gente dá um jeito." },
-      { key: "poupador",    label: "Intacto. Eu raramente saio pra não gastar." },
-      { key: "malabarista", label: "Não sei bem quanto tenho \u2014 decido na hora se dá." },
-      { key: "investidor",  label: "Controlado, ainda tenho a cota separada pro fim de semana." },
+      { key: "gastador",    label: "Já não tenho muita margem, mas dou um jeito de sair mesmo assim." },
+      { key: "poupador",    label: "Sobra bastante, porque eu saio pouco justamente pra não gastar." },
+      { key: "malabarista", label: "Não sei bem quanto tenho — decido na hora se dá pra ir." },
+      { key: "investidor",  label: "Controlado — ainda tenho a parte que separei pro lazer desse mês." },
     ],
   },
   {
     text: "Você quer comprar um videogame ou notebook caro. Qual sua estratégia?",
     options: [
-      { key: "gastador",    label: "Parcela em 12x ou 24x e seja o que Deus quiser." },
-      { key: "poupador",    label: "Desisto, dá dor no coração gastar isso de uma vez." },
+      { key: "gastador",    label: "Parcelo em várias vezes e vou ajustando o orçamento depois." },
+      { key: "poupador",    label: "Acabo desistindo, prefiro não gastar tanto de uma vez." },
       { key: "malabarista", label: "Decido no impulso e vou ajustando o mês conforme os boletos chegam." },
-      { key: "investidor",  label: "Guardo todo mês até ter o valor pra pedir desconto à vista." },
+      { key: "investidor",  label: "Guardo aos poucos até ter o valor pra pagar à vista ou negociar desconto." },
     ],
   },
   {
     text: "Qual frase melhor define sua relação com roupas?",
     options: [
-      { key: "gastador",    label: "\u201cRoupa nova levanta a autoestima!\u201d" },
-      { key: "poupador",    label: "\u201cSó compro se rasgar a que eu tô usando.\u201d" },
-      { key: "malabarista", label: "\u201cCompro na empolgação e só depois vejo como encaixa nos gastos.\u201d" },
-      { key: "investidor",  label: "\u201cCompro o necessário, busco custo-benefício.\u201d" },
+      { key: "gastador",    label: "Compro com frequência, gosto de renovar o guarda-roupa." },
+      { key: "poupador",    label: "Só compro quando realmente preciso substituir algo." },
+      { key: "malabarista", label: "Compro na empolgação e só depois vejo como encaixa nos meus gastos." },
+      { key: "investidor",  label: "Compro o necessário, buscando custo-benefício." },
     ],
   },
   {
+    // pergunta direta de autoavaliação (estilo Quizur), em vez de cenário
     text: "Qual seu principal objetivo com o dinheiro hoje?",
     options: [
-      { key: "gastador",    label: "Ter liberdade pra comprar o que eu quiser." },
-      { key: "poupador",    label: "Nunca passar por nenhum sufoco na vida." },
-      { key: "malabarista", label: "Ir resolvendo as coisas conforme elas aparecem." },
-      { key: "investidor",  label: "Fazer o patrimônio crescer pra ter tranquilidade no futuro." },
+      { key: "gastador",    label: "Ter liberdade pra aproveitar o presente." },
+      { key: "poupador",    label: "Nunca ser pego de surpresa por um imprevisto." },
+      { key: "malabarista", label: "Dar conta do que aparece, sem um plano de longo prazo ainda." },
+      { key: "investidor",  label: "Construir algo maior no futuro, mesmo que exija paciência agora." },
     ],
   },
   {
     text: "Como você acompanha seus gastos mensais?",
     options: [
-      { key: "gastador",    label: "Acompanhar? Eu confio na minha memória (ou seja, não acompanho)." },
-      { key: "poupador",    label: "Anoto cada centavo obsessivamente numa planilha." },
-      { key: "malabarista", label: "Não tenho método fixo \u2014 às vezes anoto, às vezes esqueço." },
-      { key: "investidor",  label: "Uso um app, planilha ou caderninho pra ter visão organizada." },
+      { key: "gastador",    label: "Não acompanho de perto, vou pelo que sinto que tenho disponível." },
+      { key: "poupador",    label: "Anoto cada centavo, gosto de ter controle total." },
+      { key: "malabarista", label: "Não tenho um método fixo — às vezes anoto, às vezes esqueço." },
+      { key: "investidor",  label: "Uso um app, planilha ou caderno pra ter uma visão organizada." },
     ],
   },
 ];
@@ -206,10 +209,14 @@ function computeResult(chosenKeys) {
     x += VECTORS[key].x;
     y += VECTORS[key].y;
   });
+  // em caso de empate exato num eixo (ex: 6 respostas pra cada lado),
+  // sorteia o lado em vez de sempre favorecer o mesmo perfil
+  const sideX = x > 0 ? 1 : x < 0 ? -1 : (Math.random() < 0.5 ? 1 : -1);
+  const sideY = y > 0 ? 1 : y < 0 ? -1 : (Math.random() < 0.5 ? 1 : -1);
   let profileId;
-  if (x >= 0 && y >= 0) profileId = "investidor";
-  else if (x >= 0 && y < 0) profileId = "poupador";
-  else if (x < 0 && y >= 0) profileId = "gastador";
+  if (sideX >= 0 && sideY >= 0) profileId = "investidor";
+  else if (sideX >= 0 && sideY < 0) profileId = "poupador";
+  else if (sideX < 0 && sideY >= 0) profileId = "gastador";
   else profileId = "malabarista";
   return { x, y, profileId };
 }
